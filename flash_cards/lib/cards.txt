@@ -1,0 +1,21 @@
+What array method always returns a new array of the same length, and doesn't change the original array?|.map
+What is the variable, used during iterations, called?|block
+Test_if_it_exists, uses what assertion?|assert_instance_of
+What assertion do we use if we want to compare return values?|assert_equal
+How do you create a new branch, and move to that branch, from terminal?|git checkout -b
+(Scope) instance/block/global/method/class - list them in order, from top to bottom, separated by commas.|global, class, instance, method, block
+How do you initialize a new local directory?|git init
+What array method iterates and returns true/false if the condition is met?|.any?
+What array method returns true/false if all elements meet the condition?|.all?
+What File method reads a separate file line-by-line?|.readlines
+What method is called on gets to remove '\n'?|.chomp
+How do you remove the first index of an array?|.shift
+How do you remove the last index of an array?|.pop
+How do you append something to the end of an array?|<<
+What is the index value of the first element in an array?|[0]
+What is the index value of the last element in an array?|[-1]
+What is the alternative to do/end?|{}
+How do you assign something to a variable?|=
+How do you compare to things?|==
+What is the naming/capitalization convention for classes?|upper camel case
+What is the naming/capitalization convention for variables?|snake case
