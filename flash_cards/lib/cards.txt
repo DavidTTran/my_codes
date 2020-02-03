@@ -16,6 +16,6 @@ What is the index value of the first element in an array?|[0]
 What is the index value of the last element in an array?|[-1]
 What is the alternative to do/end?|{}
 How do you assign something to a variable?|=
-How do you compare to things?|==
+How do you compare two things?|==
 What is the naming/capitalization convention for classes?|upper camel case
 What is the naming/capitalization convention for variables?|snake case

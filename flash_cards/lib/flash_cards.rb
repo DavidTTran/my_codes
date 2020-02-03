@@ -1,8 +1,7 @@
 require 'pry'
+require 'colorize'
 
 class CardGenerator
-  attr_reader :filename
-
   def initialize(filename)
     @filename = "./lib/cards.txt"
   end
@@ -22,40 +21,40 @@ class CardGenerator
 end
 
 class Card
-  attr_reader :card_question, :card_answer
+  attr_reader :question, :answer
 
-  def initialize(card_question, card_answer)
-    @card_question = card_question
-    @card_answer = card_answer
+  def initialize(question, answer)
+    @question = question
+    @answer = answer
   end
 end
 
 class Deck
-  attr_reader :deck_cards
+  attr_reader :cards
 
-  def initialize(deck_cards)
-    @deck_cards = deck_cards
+  def initialize(cards)
+    @cards = cards
   end
 
   def count
-    @deck_cards.length
+    @cards.length
   end
 end
 
 class Turn
-  attr_reader :turn_guess, :card
+  attr_reader :guess, :card
 
-  def initialize(turn_guess, card)
-    @turn_guess = turn_guess
+  def initialize(guess, card)
+    @guess = guess
     @card = card
   end
 
   def correct?
-    if @card.card_answer == @turn_guess
-      puts "Correct!"
+    if @card.answer == @guess
+      puts "Correct!\n".green
       true
     else
-      puts "Incorrect. The correct answer was: #{@card.card_answer}"
+      puts "Incorrect. The correct answer was: #{@card.answer}\n".red
       false
     end
   end
@@ -69,39 +68,53 @@ class Round
     @turns = []
     @number_correct = 0
     @total_number_of_cards = 0
+    @incorrect_questions = []
   end
 
   def current_card
-    @deck.deck_cards.first
+    @deck.cards.first
   end
 
   def percent_correct
     ((@number_correct.to_f / @turns.size) * 100).round(2)
   end
 
-  def take_turn(turn_guess)
-    turn = Turn.new(turn_guess, current_card)
-    @number_correct += 1 unless turn.correct? != true
+  def take_turn(guess)
+    turn = Turn.new(guess, current_card)
+    if turn.correct? == true
+      @number_correct += 1
+    else
+      @incorrect_questions << turn
+    end
     @turns << turn
-    @deck.deck_cards.shift()
+    @deck.cards.shift()
     turn
   end
 
   def start
+    @deck.cards.shuffle!
     card_counter = 1
     total_number_of_cards = @deck.count
-    puts "Welcome! You're playing with #{total_number_of_cards} cards."
+
+    puts "\nWelcome! You're playing with #{total_number_of_cards} cards.".yellow
 
     while @turns.count != total_number_of_cards
       puts "-" * 50
-      puts "This is card number #{card_counter} out of #{total_number_of_cards}."
-      puts "Question: #{current_card.card_question}"
-      turn_guess = gets.chomp.downcase
-      take_turn(turn_guess)
+      puts "\nThis is card number #{card_counter} out of #{total_number_of_cards}."
+      puts "Question: #{current_card.question}".yellow
+      guess = gets.chomp.downcase
+      take_turn(guess)
       card_counter += 1
     end
-    puts ("-" * 20) + "Game over!" + ("-" * 20)
-    puts "You had #{@number_correct} correct guesses out of #{total_number_of_cards} for a total score of #{percent_correct}%."
+    puts (("-" * 20) + "Game over!" + ("-" * 20)).red
+    puts "You had #{@number_correct} correct guesses out of #{total_number_of_cards} for a total score of #{percent_correct}%.".yellow
+    puts "\nThe questions you got wrong were.." unless @incorrect_questions.size == 0
+    until @incorrect_questions.size == 0
+      puts "-" * 50
+      puts "#{@incorrect_questions.first.card.question}" + " #{@incorrect_questions.first.card.answer}".red
+      @incorrect_questions.shift()
+    end
+    puts ""
   end
 end
 
